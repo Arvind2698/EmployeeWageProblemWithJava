@@ -15,11 +15,11 @@ class Employee{
     private int PartTimeWorkingDays;
     private int AbsentDays;
 
-    public Employee(int WagePerHour,int HoursPerDay,int PartTimeHours,String companyName){
+    public Employee(int WagePerHour,int HoursPerDay,int PartTimeHours){
         this.WagePerHour=WagePerHour;
         this.HoursPerDay=HoursPerDay;
         this.PartTimeHours=PartTimeHours;
-        this.companyName=companyName;
+        // this.companyName=companyName;
         WagePerDay=0;
         TotalWageForMonth=0;
         TotalWorkingHours=0;
@@ -94,7 +94,7 @@ public class EmployeeWageComputation{
             int PartTimeHours=scanner.nextInt();
             System.out.println("Enter the name of the company");
             String CompanyName=scanner.next();
-            Employee comp=new Employee(WagePerHour,HoursPerDay, PartTimeHours,CompanyName);
+            Employee comp=new Employee(WagePerHour,HoursPerDay, PartTimeHours);
             comp.CalculateWagePerMonth();
             companies.put(CompanyName,comp.getWagePerMonth());
         }
