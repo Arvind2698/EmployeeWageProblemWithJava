@@ -5,6 +5,7 @@ abstract class EmployeeTemplate{
     public int WagePerHour;
     public int HoursPerDay;
     public int PartTimeHours;
+    public String companyName;
 
     public int WagePerDay;
     public int TotalWageForMonth;
@@ -15,7 +16,8 @@ abstract class EmployeeTemplate{
 
     public static HashMap<String,Integer> companies=new HashMap<>();
 
-    public EmployeeTemplate(int WagePerHour,int HoursPerDay,int PartTimeHours){
+    public EmployeeTemplate(String companyName,int WagePerHour,int HoursPerDay,int PartTimeHours){
+        this.companyName=companyName;
         this.WagePerHour=WagePerHour;
         this.HoursPerDay=HoursPerDay;
         this.PartTimeHours=PartTimeHours;
@@ -49,8 +51,8 @@ abstract class EmployeeTemplate{
 
 class Company1 extends EmployeeTemplate{
 
-    Company1(int WagePerHour,int HoursPerDay,int PartTimeHours){
-        super(WagePerHour,HoursPerDay,PartTimeHours);
+    Company1(String companyName,int WagePerHour,int HoursPerDay,int PartTimeHours){
+        super(companyName,WagePerHour,HoursPerDay,PartTimeHours);
     }
     public void CalculateWagePerDay(){
         int EmployeeAttendance=CalculateAttendance();
@@ -80,13 +82,14 @@ class Company1 extends EmployeeTemplate{
                 break;
             }
         }
+        EmployeeTemplate.companies.put(this.companyName, this.TotalWageForMonth);
     }
 }
 
 class Company2 extends EmployeeTemplate{
 
-    Company2(int WagePerHour,int HoursPerDay,int PartTimeHours){
-        super(WagePerHour,HoursPerDay,PartTimeHours);
+    Company2(String companyName,int WagePerHour,int HoursPerDay,int PartTimeHours){
+        super(companyName,WagePerHour,HoursPerDay,PartTimeHours);
     }
     public void CalculateWagePerDay(){
         int EmployeeAttendance=CalculateAttendance();
@@ -116,13 +119,16 @@ class Company2 extends EmployeeTemplate{
                 break;
             }
         }
+        EmployeeTemplate.companies.put(this.companyName, this.TotalWageForMonth);
     }
 }
 
 public class EmployeeWageComputation{
     public static void main(String arg[]){
-        Company1 emp1=new Company1(20, 8,4);
+        Company1 emp1=new Company1("Wallmart",20, 8,4);
         emp1.CalculateWagePerMonth();
-        emp1.display();
+        Company2 emp2=new Company2("WallGreens", 35, 7, 3);
+        emp2.CalculateWagePerMonth();
+        System.out.println(EmployeeTemplate.companies);
     }
 }
