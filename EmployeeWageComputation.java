@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -14,6 +15,8 @@ class Employee{
     private int FullWorkingDays;
     private int PartTimeWorkingDays;
     private int AbsentDays;
+    // public int[] dailyWages;
+    public ArrayList<Integer> dailyWages;
 
     public Employee(int WagePerHour,int HoursPerDay,int PartTimeHours){
         this.WagePerHour=WagePerHour;
@@ -26,6 +29,8 @@ class Employee{
         FullWorkingDays=0;
         PartTimeWorkingDays=0;
         AbsentDays=0;
+        // dailyWages=new int[20];
+        dailyWages=new ArrayList<>();
     }
 
     public int CalculateAttendance(){
@@ -38,14 +43,17 @@ class Employee{
             case 0:this.WagePerDay=0;
                 this.TotalWorkingHours+=0;
                 this.AbsentDays++;
+                
                 break;
             case 1:this.WagePerDay=this.WagePerHour*this.HoursPerDay;
                 this.TotalWorkingHours+=this.HoursPerDay;
                 this.FullWorkingDays++;
+                
                 break;
             case 2:this.WagePerDay=this.WagePerHour*this.PartTimeHours;
                 this.TotalWorkingHours+=this.PartTimeHours;
                 this.PartTimeWorkingDays++;
+                
                 break;
             default:
                 System.out.println("Error Occurred");
@@ -53,9 +61,11 @@ class Employee{
     }
 
     public void CalculateWagePerMonth(){
-        for(int day=1;day<=20;day++){
+        for(int day=0;day<20;day++){
             while(this.TotalWorkingHours<100){
                 CalculateWagePerDay();
+                // this.dailyWages[day]=this.WagePerDay;
+                dailyWages.add(this.WagePerDay);
                 this.TotalWageForMonth+=this.WagePerDay;
                 break;
             }
@@ -64,6 +74,13 @@ class Employee{
 
     public int getWagePerMonth(){
         return TotalWageForMonth;
+    }
+
+    public ArrayList<Integer> getDailyWages(){
+        // for(int i=0;i<this.dailyWages.length;i++){
+        //     System.out.println(this.dailyWages[i]);
+        // }
+        return dailyWages;
     }
 
     public void display(){
@@ -80,7 +97,7 @@ class Employee{
 public class EmployeeWageComputation{
     public static void main(String arg[]){
 
-        HashMap<String,Integer> companies=new HashMap<>();
+        HashMap<String,ArrayList<Integer>> companies=new HashMap<>();
 
         System.out.println("Enter the number of companies");
         Scanner scanner=new Scanner(System.in);
@@ -94,9 +111,9 @@ public class EmployeeWageComputation{
             int PartTimeHours=scanner.nextInt();
             System.out.println("Enter the name of the company");
             String CompanyName=scanner.next();
-            Employee comp=new Employee(WagePerHour,HoursPerDay, PartTimeHours);
+            Employee comp=new Employee(WagePerHour,HoursPerDay,PartTimeHours);
             comp.CalculateWagePerMonth();
-            companies.put(CompanyName,comp.getWagePerMonth());
+            companies.put(CompanyName,comp.getDailyWages());
         }
 
         System.out.println(companies);
@@ -105,7 +122,7 @@ public class EmployeeWageComputation{
         String searchCompany=scanner.next();
 
         if(companies.containsKey(searchCompany)){
-            System.out.println("Employee Wage of: "+searchCompany+" is Rs."+companies.get(searchCompany));
+            System.out.println("Daily Wage of: "+searchCompany+" is Rs."+companies.get(searchCompany));
         }else{
             System.out.println("No such company");
         }
