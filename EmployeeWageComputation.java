@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.*;
 
 class Employee{
 
@@ -18,11 +20,11 @@ class Employee{
     // public int[] dailyWages;
     public ArrayList<Integer> dailyWages;
 
-    public Employee(int WagePerHour,int HoursPerDay,int PartTimeHours){
+    public Employee(String companyName,int WagePerHour,int HoursPerDay,int PartTimeHours){
         this.WagePerHour=WagePerHour;
         this.HoursPerDay=HoursPerDay;
         this.PartTimeHours=PartTimeHours;
-        // this.companyName=companyName;
+        this.companyName=companyName;
         WagePerDay=0;
         TotalWageForMonth=0;
         TotalWorkingHours=0;
@@ -43,17 +45,17 @@ class Employee{
             case 0:this.WagePerDay=0;
                 this.TotalWorkingHours+=0;
                 this.AbsentDays++;
-                
+
                 break;
             case 1:this.WagePerDay=this.WagePerHour*this.HoursPerDay;
                 this.TotalWorkingHours+=this.HoursPerDay;
                 this.FullWorkingDays++;
-                
+
                 break;
             case 2:this.WagePerDay=this.WagePerHour*this.PartTimeHours;
                 this.TotalWorkingHours+=this.PartTimeHours;
                 this.PartTimeWorkingDays++;
-                
+
                 break;
             default:
                 System.out.println("Error Occurred");
@@ -83,6 +85,10 @@ class Employee{
         return dailyWages;
     }
 
+    public String getCompanyName(){
+        return companyName;
+    }
+
     public void display(){
         System.out.println("#######################################################################");
         System.out.println("Total Wage Earned at the end of 20 days/100 hours: "+TotalWageForMonth);
@@ -97,7 +103,7 @@ class Employee{
 public class EmployeeWageComputation{
     public static void main(String arg[]){
 
-        HashMap<String,ArrayList<Integer>> companies=new HashMap<>();
+        HashMap<String,Employee> companies=new HashMap<>();
 
         System.out.println("Enter the number of companies");
         Scanner scanner=new Scanner(System.in);
@@ -111,21 +117,36 @@ public class EmployeeWageComputation{
             int PartTimeHours=scanner.nextInt();
             System.out.println("Enter the name of the company");
             String CompanyName=scanner.next();
-            Employee comp=new Employee(WagePerHour,HoursPerDay,PartTimeHours);
+            Employee comp=new Employee(CompanyName,WagePerHour,HoursPerDay,PartTimeHours);
             comp.CalculateWagePerMonth();
-            companies.put(CompanyName,comp.getDailyWages());
+            companies.put(CompanyName,comp);
         }
 
         System.out.println(companies);
 
-        System.out.println("Enter the name of the company to retrieve monthly wage");
-        String searchCompany=scanner.next();
+        Iterator itr=companies.entrySet().iterator();
 
-        if(companies.containsKey(searchCompany)){
-            System.out.println("Daily Wage of: "+searchCompany+" is Rs."+companies.get(searchCompany));
-        }else{
-            System.out.println("No such company");
+        while(itr.hasNext()){
+            Map.Entry mapElement = (Map.Entry)itr.next();
+            System.out.println(mapElement.getKey());
+            Employee e=(Employee)mapElement.getValue();
+            System.out.println("############################################");
+            System.out.println(e.getCompanyName());
+            System.out.println("the daily wages are:");
+            System.out.println(e.getDailyWages());
+            System.out.println("the wages for the month:");
+            System.out.println(e.getWagePerMonth());
         }
+
+
+        // System.out.println("Enter the name of the company to retrieve monthly wage");
+        // String searchCompany=scanner.next();
+
+        // if(companies.containsKey(searchCompany)){
+        //     System.out.println("Daily Wage of: "+searchCompany+" is Rs."+companies.get(searchCompany));
+        // }else{
+        //     System.out.println("No such company");
+        // }
 
     }
 }
